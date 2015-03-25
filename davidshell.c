@@ -52,6 +52,7 @@ char* readline(){
       line = realloc(line,len+length);
       if(line==NULL){
 	printf("realloc fail");
+	exit(1);
       }
     }
   }
