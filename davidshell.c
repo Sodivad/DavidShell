@@ -1,11 +1,12 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void  shellprint();
 char* readline();
+char** splitcommand(char* command);
 
 
 int main(int argc, char** argv){
@@ -13,7 +14,7 @@ int main(int argc, char** argv){
   while(1){
     shellprint();
     char* command = readline();
-    printf("%s\n",command);
+    char** split = splitcommand(command);
   }
 }
 
@@ -56,4 +57,31 @@ char* readline(){
       }
     }
   }
+}
+
+char** splitcommand(char* command){
+  int cnt = 1;
+  char* ptr;
+  char** split;
+  int i = strlen(command);
+  printf("%i",i);
+  for(i=0;i<strlen(command);++i){
+    if(command[i]==' '){
+      ++cnt;
+      }
+  }
+  printf("%i",cnt);
+  split = malloc(cnt*sizeof(char*));
+  if(split==NULL){
+    printf("malloc rip");
+    exit(1);
+  }
+  ptr = strtok(command," ");
+  cnt = 0;
+  while(ptr!=NULL){
+    split[cnt]=ptr;
+    ptr = strtok(NULL," ");
+    ++cnt;
+  }
+  return  split;
 }
