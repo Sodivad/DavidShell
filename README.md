@@ -1,7 +1,7 @@
 # DavidShell
-## Was geht: 
-* Eingabe lesen 
-* Working Directory anzeigen 
+## Things that work: 
+* Reading Input
+* Display working directory 
 
-## Was nicht geht:
-* Alles andere
+## Things that don't work
+* Everything else
