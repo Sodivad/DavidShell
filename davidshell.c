@@ -4,18 +4,23 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "commands.h"
+
 void  shellprint();
 char* readline();
 char** splitcommand(char* command);
 
 
 int main(int argc, char** argv){
-  
-  while(1){
+  int exit = 0;
+  while(!exit){
     shellprint();
     char* command = readline();
     char** split = splitcommand(command);
+    exit = execute(split);
   }
+  //TODO: cleanup
+  return 0;
 }
 
 void shellprint(){
@@ -64,13 +69,11 @@ char** splitcommand(char* command){
   char* ptr;
   char** split;
   int i = strlen(command);
-  printf("%i",i);
   for(i=0;i<strlen(command);++i){
     if(command[i]==' '){
       ++cnt;
       }
   }
-  printf("%i",cnt);
   split = malloc(cnt*sizeof(char*));
   if(split==NULL){
     printf("malloc rip");
