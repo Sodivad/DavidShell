@@ -1,6 +1,8 @@
 #include <pwd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #include "commands.h"
@@ -13,6 +15,9 @@ int builtin_cd(char** args){
   if(chdir(args[1]) == -1){
     perror("cd");
   }
+  else{
+    setenv("PWD",getcwd(NULL,0),1);
+  }
   return 0;
 }
 
@@ -20,6 +25,25 @@ int  builtin_exit(char** arg){
   return 1;
 }
 
+
+void runprogramm(char** args){
+  pid_t pid = fork();
+  if(pid==-1){
+    printf("Creating a new process failed %s",args[0]);
+  }
+  else if(pid==0){
+    if(execvp(args[0],args)==-1){
+      perror("That shouldn't happen");
+    }
+  }
+  else{
+    int status;
+    do{
+      waitpid(pid, &status, WUNTRACED);
+    }
+    while(!WIFEXITED(status)||WIFSIGNALED(status));
+  }
+}
 
 int execute(char** command){
   char* builtins[] = {"cd","exit"}; 
@@ -31,6 +55,7 @@ int execute(char** command){
       return  (*builtinfunc[i])(command);
     }
   }
+  runprogramm(command);
   return 0;
 }
 
