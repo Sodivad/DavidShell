@@ -16,8 +16,10 @@ int main(int argc, char** argv){
   while(!exit){
     shellprint();
     char* command = readline();
-    char** split = splitcommand(command);
-    exit = execute(split);
+    if(strlen(command)){
+      char** split = splitcommand(command);
+      exit = execute(split);
+    }
   }
   //TODO: cleanup
   return 0;
