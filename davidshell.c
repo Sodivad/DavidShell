@@ -76,7 +76,7 @@ char** splitcommand(char* command){
       ++cnt;
       }
   }
-  split = malloc(cnt*sizeof(char*));
+  split = malloc(cnt*sizeof(char*)+1);
   if(split==NULL){
     printf("malloc rip");
     exit(1);
@@ -88,5 +88,6 @@ char** splitcommand(char* command){
     ptr = strtok(NULL," ");
     ++cnt;
   }
+  split[cnt] = NULL;
   return  split;
 }
